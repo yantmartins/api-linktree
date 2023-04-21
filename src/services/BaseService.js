@@ -26,12 +26,30 @@ class BaseService {
         }
    }
     
-    atualizar(id, dados) {
+    async atualizar(id, dados) {
+        try {
+            if(!id) {
+                throw erros.geral.idNaoInformado
+            }
+            const atualizado = await this.model.findOneAndUpdate({_id: id}, dados, {new: true, upsert: false})
+            return atualizado
+        } catch (error) {
+            console.log(error)
+            throw erros.geral.erroAoAtualizarRegistro
+        }
 
     }
-
-    deletar(id) {
-       
+    async deletar(id) {
+        if(!id) {
+            throw erros.geral.idNaoInformado
+        }
+        try {
+            const deletado = await this.model.findOneAndDelete({_id: id})
+            return deletado
+        } catch (error) {
+            console.log(error)
+            throw erros.geral.erroAoDeletarRegistro
+        }       
     }
 }
 
