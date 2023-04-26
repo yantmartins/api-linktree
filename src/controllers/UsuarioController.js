@@ -81,6 +81,17 @@ class UsuarioController {
             return res.status(error.statusCode || 500).send(error)
         }
     }
+
+    async recuperarSenha(req, res) {
+        try {
+            const email = req.params.email
+            const resultado = await this.usuarioService.recuperarSenha(email)
+            return res.status(200).send(resultado)
+        } catch (error) {
+            console.log(error)
+            return res.status(error.statusCode || 500).send(error)
+        }
+    }
 }
 
 module.exports = UsuarioController

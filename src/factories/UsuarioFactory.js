@@ -2,8 +2,11 @@ const UsuarioController = require("../controllers/UsuarioController");
 const UsuarioModel = require("../models/usuarioModel");
 const UsuarioService = require("..//services/UsuarioService");
 
+const TokenService = require("./../services/TokenService");
+const EmailService = require("./../services/EmailService");
+
 function getUsuarioService() {
-    const usuarioService = new UsuarioService(UsuarioModel)
+    const usuarioService = new UsuarioService(UsuarioModel, EmailService, TokenService)
     return usuarioService
 }
 

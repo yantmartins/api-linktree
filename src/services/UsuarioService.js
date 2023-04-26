@@ -4,8 +4,23 @@ const BaseService = require("./BaseService")
 const SALT_ROUNDS = 10
 
 class UsuarioService extends BaseService {
-    constructor(model) {
+    constructor(model, emailService, tokenService) {
         super(model)
+        this.emailService = emailService
+        this.tokenService = tokenService
+    }
+
+    async recuperarSenha(email) {
+        const usuario = await this.model.findOne({ email })
+
+        if(!usuario || !usuario._id) {
+            throw erros.usuario.usuarioNaoEncontrado
+        }
+
+        const token = this.tokenService.gerarToken(usuario.email)
+        await this.emailService.enviarTokenRecuperarSenha(usuario.email, token)
+
+        return 'Código enviado no E-mail :)'
     }
 
     async buscarTodosAtivos() {
@@ -26,12 +41,12 @@ class UsuarioService extends BaseService {
                 senha: hash,
                 links: []
             }
-    
+
             const usuarioCriado = await this.inserir(dadosFormatados)
-    
+
             return usuarioCriado
         } catch (error) {
-            if(error.mensagem) throw error
+            if (error.mensagem) throw error
 
             console.log(error);
 
@@ -39,31 +54,40 @@ class UsuarioService extends BaseService {
         }
     }
 
-    async buscarUsuarioPorId(id){
-        const usuario = await this.model.findOne({ _id: id })
-        if(!usuario || !usuario._id) {
+    async buscarUsuarioPorId(id) {
+        const usuario = await this.model.findOne({
+            _id: id
+        })
+        if (!usuario || !usuario._id) {
             throw erros.usuario.usuarioNaoEncontrado
         }
         return usuario
     }
 
     async deletarLink(idDoUsuario, idDoLink) {
-        const usuario = await this.buscarUsuarioPorId(idDoUsuario)
-        const indexLink = usuario.links.findIndex(link => link._id == idDoLink)
-        if(indexLink == -1) {
-           throw erros.usuario.linkNaoEncontrado 
+        const usuario = await this.buscarUsuarioPorId(
+            idDoUsuario
+        )
+        const indexLink = usuario.links.findIndex(
+            link => link._id == idDoLink
+        )
+        if (indexLink == -1) {
+            throw erros.usuario.linkNaoEncontrado
         }
         usuario.links.splice(indexLink, 1)
 
-        const resultado = await this.atualizar(usuario._id, usuario)
+        const resultado = await this.atualizar(
+            usuario._id,
+            usuario
+        )
         return resultado
     }
 
-    async editarLink(idDoUsuario, dados){
+    async editarLink(idDoUsuario, dados) {
         const usuario = await this.buscarUsuarioPorId(idDoUsuario)
         const indexLink = usuario.links.findIndex(link => link._id == dados._id)
-        
-        if(indexLink == -1) {
+
+        if (indexLink == -1) {
             throw erros.usuario.linkNaoEncontrado
         }
         const copia = usuario.links[indexLink]
@@ -79,6 +103,8 @@ class UsuarioService extends BaseService {
     }
 
 
+
+
     async adicionarLink(idUsuario, dados) {
         try {
             const usuario = await this.buscarUsuarioPorId(idUsuario)
@@ -91,7 +117,7 @@ class UsuarioService extends BaseService {
             return resultado
         } catch (error) {
             console.log(error)
-            if(error.code && error.mensagem) throw error
+            if (error.code && error.mensagem) throw error
             throw erros.usuario.erroAoInserirLink
         }
     }
