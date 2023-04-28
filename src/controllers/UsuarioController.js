@@ -2,6 +2,30 @@ class UsuarioController {
     constructor(service) {
         this.usuarioService = service
     }
+
+    async login(req, res) {
+        try {
+            const { email, senha } = req.body
+            const resultado = await this.usuarioService.login(email, senha)
+            return res.status(200).send(resultado)            
+        } catch (error) {
+            console.log(error)
+            return res.status(error.statusCode || 500).send(error)
+        }
+    }
+
+    async atualizarSenha(req, res) {
+        try {
+            const { token } = req.params
+            const { novaSenha } = req.body
+            const resultado = await this.usuarioService.atualizarSenha(token, novaSenha)
+            return res.status(200).send(resultado)
+        } catch (error) {
+            console.log(error)
+            return res.status(error.statusCode || 500).send(error)
+        }
+    }
+
     async buscarTodos(req, res) {
         try {
             const resultado = await this.usuarioService.buscarTodos()

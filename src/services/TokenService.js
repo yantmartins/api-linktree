@@ -6,6 +6,11 @@ function gerarToken(conteudo) {
     return token
 }
 
+function verificarToken(token) {
+    return jwt.verify(token, senha)
+}
+
 module.exports = {
-    gerarToken
+    gerarToken,
+    verificarToken
 }
