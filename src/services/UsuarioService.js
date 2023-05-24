@@ -1,6 +1,6 @@
-const erros = require("../errors")
-const bcrypt = require("bcrypt")
-const BaseService = require("./BaseService")
+const erros = require('../errors')
+const bcrypt = require('bcrypt')
+const BaseService = require('./BaseService')
 const SALT_ROUNDS = 10
 
 class UsuarioService extends BaseService {
@@ -10,56 +10,69 @@ class UsuarioService extends BaseService {
         this.tokenService = tokenService
         this.salt = bcrypt.genSaltSync(SALT_ROUNDS)
     }
-
     async login(email, senha) {
         const usuario = await this.model.findOne({ email })
 
-        if(!usuario || !usuario._id) {
-            throw erros.usuario.usuarioNaoEncontrado
-    }
-
-    const ehValido = bcrypt.compareSync(senha, usuario.senha)
-
-    if(!ehValido) {
-        throw erros.usuario.loginInvalido
-    }
-
-    const tokenDeSessao = this.tokenService.gerarToken({
-        _id: usuario._id,
-        email: usuario.email
-    })
-    return {
-        token: tokenDeSessao,
-        nome: usuario.nome,
-        email: usuario.email
-    }
-}
-
-    async atualizarSenha(token, novaSenha) {
-        const email = this.tokenService.verificarToken(token)
-
-        const usuario = await this.model.findOne({ email })
-
-        if(!usuario || !usuario._id) {
-            throw erros.usuario.usuarioNaoEncontrado
+        if (!usuario || !usuario._id) {
+            throw erros.usuario.loginInvalido
         }
-        const hash = bcrypt.hashSync(novaSenha, this.salt)
+
+        const ehValido = bcrypt.compareSync(senha, usuario.senha)
+
+        if(!ehValido) {
+            throw erros.usuario.loginInvalido
+        }
+
+        const tokenDeSessao = this.tokenService.gerarToken({
+            _id: usuario._id,
+            email: usuario.email
+        })
+
+        return {
+            token: tokenDeSessao,
+            nome: usuario.nome,
+            email: usuario.email
+        }
+    }
+    async atualizarSenha(token, novaSenha) {
+        const email = this.tokenService
+            .verificarToken(token)
+
+        const usuario = await this.model
+            .findOne({ email })
+
+        if (!usuario || !usuario._id) {
+            throw erros.usuario
+                .usuarioNaoEncontrado
+        }
+        const hash = bcrypt.hashSync(
+            novaSenha,
+            this.salt
+        )
         usuario.senha = hash
-        const atualizado = await this.atualizar(usuario._id, usuario)
+        const atualizado = await this.atualizar(
+            usuario._id, usuario)
         return atualizado
     }
 
     async recuperarSenha(email) {
-        const usuario = await this.model.findOne({ email })
+        const usuario = await this.model
+            .findOne({ email })
 
-        if(!usuario || !usuario._id) {
-            throw erros.usuario.usuarioNaoEncontrado
+        if (!usuario || !usuario._id) {
+            throw erros.usuario
+                .usuarioNaoEncontrado
         }
 
-        const token = this.tokenService.gerarToken(usuario.email)
-        await this.emailService.enviarTokenRecuperarSenha(usuario.email, token)
+        const token = this.tokenService
+            .gerarToken(usuario.email)
+        await this.emailService
+            .enviarTokenRecuperarSenha(
+                usuario.email, 
+                token
+            )
 
-        return 'Código enviado no E-mail :)'
+        return 'Código enviado no Email :)'
     }
 
     async buscarTodosAtivos() {
@@ -73,7 +86,7 @@ class UsuarioService extends BaseService {
 
     async criarUsuario(dados) {
         try {
-            const hash = bcrypt.hashSync(dados.senha, SALT_ROUNDS);
+            const hash = bcrypt.hashSync(dados.senha, 15);
             const dadosFormatados = {
                 nome: dados.nome,
                 email: dados.email,
@@ -141,6 +154,9 @@ class UsuarioService extends BaseService {
         return resultado
     }
 
+
+
+
     async adicionarLink(idUsuario, dados) {
         try {
             const usuario = await this.buscarUsuarioPorId(idUsuario)
@@ -158,6 +174,8 @@ class UsuarioService extends BaseService {
         }
     }
 
+
 }
+
 
 module.exports = UsuarioService

@@ -1,16 +1,15 @@
-const nodemailer = require("nodemailer")
+const nodemailer = require('nodemailer')
 const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_SERVER,
-    port: process.env.SMTP_PORT,
-    secure: true,
-    auth: {
-        user: process.env.SMTP_EMAIL,
-        pass: process.env.SMTP_SENHA,
-    },
+  host: process.env.SMTP_SERVER,
+  port: process.env.SMTP_PORT,
+  secure: true, // true for 465, false for other ports
+  auth: {
+    user: process.env.SMTP_EMAIL, // generated ethereal user
+    pass: process.env.SMTP_SENHA, // generated ethereal password
+  },
 });
-
 function enviarTokenRecuperarSenha(email, token) {
-    transporter.sendMail({
+  transporter.sendMail({
     from: '"API LINK T42" <yaanmaartins@gmail.com>', // sender address
     to: "yantmartins@live.com", // list of receivers
     subject: "Recuperação de Senha", // Subject line

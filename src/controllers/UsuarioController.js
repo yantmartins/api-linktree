@@ -6,19 +6,20 @@ class UsuarioController {
     async login(req, res) {
         try {
             const { email, senha } = req.body
-            const resultado = await this.usuarioService.login(email, senha)
-            return res.status(200).send(resultado)            
+            const resultado = await this.usuarioService
+                .login(email, senha)
+            return res.status(200).send(resultado)
         } catch (error) {
             console.log(error)
             return res.status(error.statusCode || 500).send(error)
         }
     }
-
     async atualizarSenha(req, res) {
         try {
             const { token } = req.params
             const { novaSenha } = req.body
-            const resultado = await this.usuarioService.atualizarSenha(token, novaSenha)
+            const resultado = await this.usuarioService
+                .atualizarSenha(token, novaSenha)
             return res.status(200).send(resultado)
         } catch (error) {
             console.log(error)
@@ -94,15 +95,22 @@ class UsuarioController {
         }
     }
 
-    async deletarLink (req, res) {
+    async deletarLink(req, res) {
+        console.log(req)
         try {
             const idUsuario = req.params.id;
             const idDoLink = req.body.idDoLink
-            const resultado = await this.usuarioService.deletarLink(idUsuario, idDoLink)
-            return res.status(200).send(resultado)
+            const resultado = await this.usuarioService
+                .deletarLink(idUsuario, idDoLink)
+            return res
+                .status(200)
+                .send(resultado)
+
         } catch (error) {
             console.log(error)
-            return res.status(error.statusCode || 500).send(error)
+            return res
+                .status(error.statusCode || 500)
+                .send(error)
         }
     }
 
@@ -110,10 +118,14 @@ class UsuarioController {
         try {
             const email = req.params.email
             const resultado = await this.usuarioService.recuperarSenha(email)
-            return res.status(200).send(resultado)
+            return res
+                .status(200)
+                .send(resultado)
         } catch (error) {
             console.log(error)
-            return res.status(error.statusCode || 500).send(error)
+            return res
+                .status(error.statusCode || 500)
+                .send(error)
         }
     }
 }

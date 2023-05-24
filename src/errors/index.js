@@ -1,62 +1,61 @@
 module.exports = Object.freeze({
     geral: {
         itemJaExiste: {
-            mensagem: "Ocorreu um erro ao criar o registro! Item já existente",
+            mensagem: 'Ocorreu um erro ao criar o regitro! Item já exite',
             statusCode: 400,
-            code: "GEN0002"
+            code: 'GEN0002'
         },
         erroAoCriarRegistro: {
-            mensagem: "Ocorreu um erro ao criar o registro",
+            mensagem: 'Ocorreu um erro ao criar o regitro',
             statusCode: 422,
-            code: "GEN0001"
+            code: 'GEN0001'
         },
         idNaoInformado: {
-            mensagem: "O campo ID não foi informado",
+            mensagem: 'O campo ID não foi informado',
             statusCode: 400,
-            code: "GEN0003"
+            code: 'GEN0003'
         },
         erroAoAtualizarRegistro: {
-            mensagem: "Ocorreu um erro ao atualizar o registro",
+            mensagem: 'Ocorreu um erro ao atualizar o registro',
             statusCode: 422,
-            code: "GEN0004"
+            code: 'GEN0004'
         },
         erroAoDeletarRegistro: {
-            mensagem: "Ocorreu um erro ao deletar o registro",
+            mensagem: 'Ocorreu um erro ao deletar o registro',
             statusCode: 422,
-            code: "GEN0005"
+            code: 'GEN0005'
         }
-       },
-       usuario: {
-        erroAoBuscarUsuarioAtivos: {
-            mensagem: "Um erro ocorreu ao buscar os Usuarios Ativos",
+    },
+    usuario: {
+        erroAoBuscarUsuariosAtivos: {
+            mensagem: 'Um erro ocorreu ao buscar os Usuarios Ativos',
             statusCode: 422,
-            code: "USU0001",
+            code: 'USU0001',
         },
-        erroAoCriarUsuario: {
-            mensagem: "Um erro ocorreu ao criar o Usuario",
+        erroAoCriarUsuario:  {
+            mensagem: 'Um erro ocorreu ao criar o Usuario',
             statusCode: 422,
-            code: "USU0002",
+            code: 'USU0002',
         },
         usuarioNaoEncontrado: {
-            mensagem: "Um erro ocorreu ao encontrar o Usuário Ativo",
+            mensagem: 'Usuario não encontrado',
             statusCode: 400,
-            code: "US0003"
+            code: 'USU0003'
         },
-        erroAoInserirLink: {
-            mensagem: "Um erro ocorreu ao inserir o link",
+        erroAoInserirLink : {
+            mensagem: 'Ocorreu um erro ao inserir o link',
             statusCode: 422,
-            code: "US0004"
+            code: 'USU0004'
         },
-
         linkNaoEncontrado: {
-                mensagem: "Link não encontrado",
-                statusCode: 400,
-                code: "US0005"
+            mensagem: 'Link não encontrado',
+            statusCode: 400,
+            code: 'USU0005'
         },
-        loginInvalido: {
-            mensagem: "Usuário ou Senha Incorretos",
+        loginInvalido : {
+            mensagem: 'Usuario ou Senha Incorretos',
             statusCode: 401,
-            code: "US0006"
+            code: 'USU0006'
         }
-       }
+    }
 })

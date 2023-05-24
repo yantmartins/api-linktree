@@ -1,4 +1,4 @@
-const erros = require("../errors")
+const erros = require('../errors')
 
 class BaseService {
     constructor(model) {
@@ -7,38 +7,37 @@ class BaseService {
 
     async buscarTodos() {
         return await this.model.find({})
-        
     }
 
     async buscarPorId(id) {
-        return await this.model.findOne({ _id: id})
+        return await this.model.findOne({ _id: id })
     }
-    
+
     async inserir(dados) {
         try {
-            return await this.model.create(dados)
+            return await this.model.create(dados)   
         } catch (error) {
             console.log(error);
             if(error.code == 11000) {
                 throw erros.geral.itemJaExiste
             }
-            throw erros.geral.erroAoCriarRegistro            
+            throw erros.geral.erroAoCriarRegistro
         }
-   }
-    
+    }
+
     async atualizar(id, dados) {
+        if(!id) {
+            throw erros.geral.idNaoInformado
+        }
         try {
-            if(!id) {
-                throw erros.geral.idNaoInformado
-            }
             const atualizado = await this.model.findOneAndUpdate({_id: id}, dados, {new: true, upsert: false})
             return atualizado
         } catch (error) {
             console.log(error)
             throw erros.geral.erroAoAtualizarRegistro
         }
-
     }
+
     async deletar(id) {
         if(!id) {
             throw erros.geral.idNaoInformado
@@ -49,7 +48,7 @@ class BaseService {
         } catch (error) {
             console.log(error)
             throw erros.geral.erroAoDeletarRegistro
-        }       
+        }
     }
 }
 
