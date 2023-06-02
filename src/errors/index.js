@@ -56,6 +56,11 @@ module.exports = Object.freeze({
             mensagem: 'Usuario ou Senha Incorretos',
             statusCode: 401,
             code: 'USU0006'
+        },
+        erroAoBuscarLinks: {
+            mensagem: 'Ocorreu um erro ao biscar os links',
+            statusCode: 422,
+            code: 'USU0007'
         }
     }
 })

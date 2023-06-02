@@ -3,6 +3,8 @@ const { getUsuarioController } = require("../factories/UsuarioFactory")
 function rota(app) {
     const controller = getUsuarioController()
     app.get('/usuarios', (req, res) => controller.buscarTodos(req, res))
+    app.get('/buscar-links-de-usuarios', (req, res) => controller.buscarLinks(req, res))
+    app.get('/usuarios/:id', (req, res) => controller.buscarPorId(req, res))
     app.post('/usuarios', (req, res) => controller.criarUsuario(req, res))
     app.put('/usuarios/:id', (req, res) => controller.atualizarUsuario(req, res))
     app.delete('/usuarios/:id', (req, res) => controller.deletarUsuario(req, res))
